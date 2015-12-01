@@ -1,0 +1,147 @@
+	/*----- 绗竴鍒楀ぉ姘� -----*/
+    .op_weather4_twoicon_today {
+        width: 12.4em;
+    }
+    
+    body{font-size:15px;}
+    
+    .font_weather_icon_size_big
+    {
+    	font-size:5em;
+    	margin-top: 0.2em;
+    }
+    .font_weather_icon_size_small
+    {
+    	font-size:4em;
+    }
+    .op_weather4_twoicon_today .op_weather4_twoicon_date {
+        text-align: left;
+        /*margin: 0em 0em 0em 1em;*/
+        width: 20em;
+    }
+
+    .op_weather4_twoicon_today .op_weather4_twoicon_icon {
+        width: 4.7em;
+        height: 4.7em;
+        margin: 1.3em 0 0 4em;
+    }
+
+    .op_weather4_twoicon_today .op_weather4_twoicon_temp {
+        padding-left: 0.5em;
+        //font-size: 1.5em;
+        font-family: Arial;
+	    margin-top: 0.5em;
+    }
+
+    .op_weather4_twoicon_today .op_weather4_twoicon_temp sup {
+        font-size: 0.5em;
+    }
+
+    .op_weather4_twoicon_today .op_weather4_twoicon_weath {
+        font-size: 0.8em;
+        margin-top: 0em !important;
+        *margin-top: 0.8em;
+    }
+
+    .op_weather4_twoicon_today .op_weather4_twoicon_wind {
+        margin-top: 0em !important;
+    }
+
+    .op_weather4_twoicon_pm25 {
+        font-size: 1em;
+        margin-top: 0.6em;
+    }
+
+    .op_weather4_twoicon_pm25 b {
+
+    }
+
+    .op_weather4_twoicon_pm25 em {
+        display: inline-block;
+        margin-left: 0.33em;
+        width: 5.47em;
+        line-height: 1.2em;
+        height: 1.2em;
+        text-align: center;
+        font-size: 0.8em;
+        font-style: normal;
+        color: #fff;
+        text-decoration: none;
+        vertical-align: middle;
+    }
+
+    /*----- 鎵�鏈夊垪 -----*/
+    .op_weather4_twoicon_today {
+        position: absolute;
+        width: 5.93em;
+        /*height: 16.67em;*/
+        text-decoration: none;
+        color: #fff;
+        border: none;
+        z-index: 20;
+        outline: none;
+    }
+
+    .op_weather4_twoicon_day{
+    	color: #fff;
+    }
+    .op_weather4_twoicon p {
+        text-align: center;
+        font-size: 0.8em;
+        text-shadow: 0.06em 0.06em 0.06em #555;
+        line-height: 1em;
+    }
+
+    /* 鏃ユ湡 */
+    .op_weather4_twoicon_date {
+        margin-top: 1.07em;
+    }
+
+	/* 澶╂皵鍥炬爣 */
+    .op_weather4_twoicon_icon {
+        width: 3.33em;
+        height: 3.33em;
+        background: no-repeat;
+        margin: 1em 0em 0em 1.33em;
+    }
+
+    .op_weather4_twoicon_temp {
+        margin-top: 1.8em;
+    }
+
+    .op_weather4_twoicon_weath {
+        z-index: 12;
+        margin-top: 0.8em;
+    }
+
+    .op_weather4_twoicon_wind {
+        margin-top: 0.73em;
+    }
+
+    /* 鍒楄〃鍒嗛殧绔栫嚎 */
+    .op_weather4_twoicon_split {
+        position: absolute;
+        left: 0em;
+        top: 0.5em;
+        width: 0.07em;
+        height: 12em;
+        background: #fff;
+
+        filter: alpha(opacity=15);
+        opacity: 0.15;
+    }
+
+    .op_weather4_twoicon_hover {
+        z-index: -1;
+        position: absolute;
+        width: 5.93em;
+        height: auto;
+    }
+
+    .op_weather4_twoicon_day:hover .op_weather4_twoicon_hover {
+        background-image:-webkit-linear-gradient(top, rgba(255,255,255,.015), rgba(255,255,255,.15));
+        background-image:-o-linear-gradient(top, rgba(255,255,255,.015), rgba(255,255,255,.15));
+        background-image:-ms-linear-gradient(top, rgba(255,255,255,.015), rgba(255,255,255,.15));
+        background-image:-moz-linear-gradient(top, rgba(255,255,255,.015), rgba(255,255,255,.15));
+        filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,StartColorStr=#04FFFFFF,EndColorStr=#40FFFFFF);
+    }

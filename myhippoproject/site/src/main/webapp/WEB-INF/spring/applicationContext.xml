@@ -1,0 +1,102 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:task="http://www.springframework.org/schema/task" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd 
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.1.xsd " default-lazy-init="false" >
+
+	<!-- ========================= BUSINESS OBJECT DEFINITIONS ========================= -->
+
+	<!-- Activates various annotations to be detected in bean classes: Spring's 
+		@Required and @Autowired, as well as JSR 250's @Resource. -->
+	<!-- <context:annotation-config/> -->
+
+	<!-- Instruct Spring to perform declarative transaction management automatically 
+		on annotated classes. -->
+	<tx:annotation-driven />
+	<context:component-scan base-package="org.example"
+		use-default-filters="true">
+	</context:component-scan>
+
+	<mvc:annotation-driven conversion-service="conversionService"
+		enable-matrix-variables="true">
+		<mvc:argument-resolvers>
+			<beans:bean
+				class="org.example.spring.mvc.convert.resolver.CustomArgumentResolver" />
+		</mvc:argument-resolvers>
+		<mvc:async-support default-timeout="3000">
+			<mvc:callable-interceptors>
+				<beans:bean
+					class="org.example.spring.mvc.convert.adapter.TimeoutCallableProcessingInterceptor" />
+			</mvc:callable-interceptors>
+		</mvc:async-support>
+		<mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg ref="utf8Charset"/>
+            </bean>
+        </mvc:message-converters>
+	</mvc:annotation-driven>
+	<!-- Only needed because we install custom converters to support the examples 
+		in the org.springframewok.samples.mvc.convert package -->
+	<beans:bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<beans:property name="formatters">
+			<beans:bean
+				class="org.example.spring.mvc.convert.MaskFormatAnnotationFormatterFactory" />
+		</beans:property>
+	</beans:bean>
+	
+	<bean
+          class="org.springframework.web.servlet.view.UrlBasedViewResolver" >
+        <property name="prefix">
+            <value>/site/</value>
+        </property>
+        <property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView"/>
+    </bean> 
+    
+    <!-- 视图实现类,将list数据输出为json -->
+	<bean id="userTopicsJson" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"
+		p:renderedAttributes="userTopics" />
+    
+	<mvc:interceptors>
+		<bean class="org.example.spring.interceptor.UserPrivilegeInterceptor" />
+	</mvc:interceptors>
+	
+	<bean id="utf8Charset" class="java.nio.charset.Charset"
+          factory-method="forName">
+        <constructor-arg value="UTF-8"/>
+    </bean>
+    
+    <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+   
+      <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+         <!--不设置则默认为classpath下的 ValidationMessages.properties
+         <property name="validationMessageSource" ref="validatemessageSource"/>-->
+      </bean>
+      <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+      <bean id="validatemessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+         <!-- 国际化文件配置  messages.properties / messages_zh_CN.properties -->
+        <property name="basename" value="classpath:i18n/messages"/>  
+        <!--<property name="basenames" >
+          <list>
+           <value>/WEB-INF/i18n/messages</value>
+          </list>
+         </property>-->
+         <property name="fileEncodings" value="utf-8"/>  
+         <property name="cacheSeconds" value="120"/>  
+      </bean>
+      
+</beans>
