@@ -154,4 +154,12 @@
       <sv:value>webfile:/freemarker/ISSstaff/accountsetting.ftl</sv:value>
     </sv:property>
   </sv:node>
+  <sv:node sv:name="hrmsg_management">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:renderpath" sv:type="String">
+      <sv:value>webfile:/freemarker/ISSstaff/hrmsg_management.ftl</sv:value>
+    </sv:property>
+  </sv:node>
 </sv:node>
