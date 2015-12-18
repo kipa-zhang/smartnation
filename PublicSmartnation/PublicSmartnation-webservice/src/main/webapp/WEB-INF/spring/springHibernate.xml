@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xmlns:aop="http://www.springframework.org/schema/aop"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
+    xmlns:mvc="http://www.springframework.org/schema/mvc" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans  
+           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+           http://www.springframework.org/schema/context  
+           http://www.springframework.org/schema/context/spring-context-4.1.xsd  
+           http://www.springframework.org/schema/aop  
+           http://www.springframework.org/schema/aop/spring-aop-4.1.xsd  
+           http://www.springframework.org/schema/tx   
+           http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+           http://www.springframework.org/schema/mvc 
+           http://www.springframework.org/schema/mvc/spring-mvc-4.1.xsd "> 
+    
+    <!-- 扫描指定包下的指定类 -->
+    <context:component-scan base-package="org.st.smartnation" />
+    <context:annotation-config/>
+    
+    <!-- 数据库配置文件 -->
+    <context:property-placeholder location="WEB-INF/conf/db.properties" file-encoding="utf8" />
+    
+    <!-- C3P0是一个开放源代码的JDBC连接池，它在lib目录中与Hibernate一起发布,包括了实现jdbc3和jdbc2扩展规范说明的Connection 和Statement 池的DataSources 对象。 -->
+    <!-- <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" 
+    	destroy-method="close" 
+    	p:driverClass="${jdbc.driverClassName}" 
+    	p:jdbcUrl="${jdbc.databaseurl}" 
+    	p:user="${jdbc.username}" 
+    	p:password="${jdbc.password}" /> -->
+    	
+    <!-- PostgreSQL 配置 -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+	    <property name="driverClassName" value="${jdbc.driverClassName}" />
+	    <property name="url" value="${jdbc.databaseurl}" />
+	    <property name="username" value="${jdbc.username}" />
+	    <property name="password" value="${jdbc.password}" />
+	    
+	</bean>
+    	
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean" 
+    	p:dataSource-ref="dataSource">
+    	
+    	<!-- 其他配置信息可以查看   LocalSessionFactoryBean 类对象的属性-->
+    	
+    	<!-- 需要扫描的包，并与数据库对应，如果数据库没有则会创建一个对应的表 -->
+    	<!-- 扫描带注解实体类 -->
+    	<property name="packagesToScan">
+			<list>
+				<value>org.st.smartnation.model</value>
+			</list>
+		</property>
+    	<property name="hibernateProperties">
+			<props>
+				<!-- 方言 允许Hibernate针对特定的关系数据库生成优化的SQL-->
+				<prop key="hibernate.dialect">${jdbc.dialect}</prop>
+				<!-- 输出所有SQL语句到控制台 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.connection.release_mode">auto</prop>
+				<prop key="hibernate.autoReconnect">true</prop> 
+				<!-- 开启查询缓存
+				<prop key="hibernate.cache.use_query_cache">true</prop> --> 
+				
+				<!-- 配置二级缓存 
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.EhCacheRegionFactory</prop>-->
+			</props>
+		</property>
+		<property name="configLocations">  
+                <list>  
+                        <!-- <value>classpath*:com/tgb/web/controller/hibernate/hibernate.cfg.test.xml</value>   -->
+                </list>  
+        </property>
+		
+    </bean>
+    	
+    <!-- 配置HibernateTemplate Bean -->
+    <bean id="hibernateTemplate"
+    	class="org.springframework.orm.hibernate4.HibernateTemplate" 
+    	p:sessionFactory-ref="sessionFactory" />
+    	
+    <!-- 配置 事务管理器 -->
+    <bean id="transactionManager" 
+    	class="org.springframework.orm.hibernate4.HibernateTransactionManager" 
+    	p:sessionFactory-ref="sessionFactory" />
+    	
+    <!-- 对标注　@Transactional 注解的Bean 进行加工处理，以织入事务管理切面	--> 
+    <tx:annotation-driven transaction-manager="transactionManager" /> 
+    
+    	
+</beans>
