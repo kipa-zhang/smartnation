@@ -68,7 +68,7 @@
     <taglibs.version>1.2.1</taglibs.version>
     <xalan.version>2.7.1</xalan.version>
     <commons.lang.version>2.6</commons.lang.version>
-    <junit.version>4.10</junit.version>
+    <junit.version>4.13.1</junit.version>
     <easymock.version>3.1</easymock.version>
      
     <filesync.override>false</filesync.override>
